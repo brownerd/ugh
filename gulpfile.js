@@ -14,7 +14,7 @@ var pkg = require('./package.json'),
     csso = require('gulp-csso'),
     through = require('through'),
     opn = require('opn'),
-    ghpages = require('gh-pages'),
+    ghPages = require('gulp-gh-pages'),
     path = require('path'),
     isDist = process.argv.indexOf('serve') === -1,
     evilIcons = require("gulp-evil-icons");
@@ -110,8 +110,13 @@ gulp.task('browser-sync', ['build'], function() {
   });
 
 
-gulp.task('deploy', ['build'], function(done) {
-  ghpages.publish(path.join(__dirname, 'dist'), { logger: gutil.log }, done);
+// gulp.task('deploy', ['build'], function(done) {
+//   ghpages.publish(path.join(__dirname, 'dist'), { logger: gutil.log }, done);
+// });
+
+gulp.task('deploy', ['build'],  function() {
+  return gulp.src('./dist/**/*')
+    .pipe(ghPages());
 });
 
 gulp.task('build', ['js', 'html', 'css', 'images']);
